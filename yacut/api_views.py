@@ -1,12 +1,8 @@
-import re
-
 from flask import jsonify, request
 
-from . import app, db
-from .error_handlers import InvalidAPIUsage
+from . import app
+from .error_handlers import InvalidAPIUsage, ShortExistsException
 from .models import URLMap
-from .views import get_random_link
-from settings import RANDOM_LINK_LENGHT
 
 
 @app.route('/api/id/', methods=('POST',))
@@ -16,17 +12,10 @@ def add_url_map():
         raise InvalidAPIUsage('Отсутствует тело запроса')
     if 'url' not in data:
         raise InvalidAPIUsage('\"url\" является обязательным полем!')
-    if 'custom_id' not in data or data['custom_id'] is None or len(data['custom_id']) == 0:
-        data['custom_id'] = get_random_link(RANDOM_LINK_LENGHT)
-    else:
-        if not re.match(r'^[A-Za-z0-9]{1,6}$', data['custom_id']):
-            raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
-    if URLMap.query.filter_by(short=data['custom_id']).first() is not None:
-        raise InvalidAPIUsage('Предложенный вариант короткой ссылки уже существует.')
-    url_map = URLMap()
-    url_map.from_dict(data)
-    db.session.add(url_map)
-    db.session.commit()
+    try:
+        url_map = URLMap.add_url_map(data.get('url'), data.get('custom_id'))
+    except ShortExistsException as exception:
+        raise InvalidAPIUsage(str(exception))
     return jsonify(url_map.to_dict()), 201
 
 
