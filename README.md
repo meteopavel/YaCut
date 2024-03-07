@@ -1,37 +1,52 @@
+# Проект YaCut
+Проект YaCut — это сервис укорачивания ссылок. Его назначение — ассоциировать длинную пользовательскую ссылку с короткой, которую предлагает сам пользователь или предоставляет сервис.
+
+## Основные используемые инструменты
+* Python        3.11.5
+* Flask-Migrate 3.1.0
+* Flask-WTF     1.0.0
+* python-dotenv 0.19.2
+
+## Развёртывание проекта на локальном компьютере
 Клонировать репозиторий и перейти в него в командной строке:
-
+```bash
+git clone git@github.com:meteopavel/yacut.git
 ```
-git clone 
-```
-
-```
-cd yacut
-```
-
 Cоздать и активировать виртуальное окружение:
-
-```
+```bash
 python3 -m venv venv
+linux: source env/bin/activate
+windows: source venv/Scripts/activate
 ```
-
-* Если у вас Linux/macOS
-
-    ```
-    source venv/bin/activate
-    ```
-
-* Если у вас windows
-
-    ```
-    source venv/scripts/activate
-    ```
-
 Установить зависимости из файла requirements.txt:
-
-```
+```bash
 python3 -m pip install --upgrade pip
-```
-
-```
 pip install -r requirements.txt
 ```
+
+## Использование
+```python
+flask run
+```
+Команда запустит сервер flask. После этого ресурс станет доступен по
+адресу http://127.0.0.1:5000. Сервис можно использовать как через 
+браузер, так и через API:
+
+### /api/id/ — POST-запрос на создание новой короткой ссылки;
+```json
+{
+  "url": "string",
+  "custom_id": "string"
+}
+```
+Поле "custom_id" является опциональным. При его отсутствии, или если оно будет пустым, короткая ссылка будет сгенерирована автоматически
+
+### /api/id/<short_id>/ — GET-запрос на получение оригинальной ссылки по указанному короткому идентификатору.
+```json
+{
+  "short_id": "string"
+}
+```
+
+## Автор
+[Павел Найденов](https://github.com/meteopavel)
