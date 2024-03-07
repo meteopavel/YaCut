@@ -25,15 +25,14 @@ def add_url_map():
         raise InvalidAPIUsage('Предложенный вариант короткой ссылки уже существует.')
     url_map = URLMap()
     url_map.from_dict(data)
-    print(url_map)
     db.session.add(url_map)
     db.session.commit()
     return jsonify(url_map.to_dict()), 201
 
 
 @app.route('/api/id/<short_id>/', methods=('GET',))
-def get_url_map(short_id):
-    original_url = URLMap.query.filter_by(short=short_id).first()
+def get_original_url(short_id):
+    original_url = URLMap.get_url_map(short_id)
     if original_url is None:
         raise InvalidAPIUsage('Указанный id не найден', 404)
     return jsonify({'url': original_url.original}), 200

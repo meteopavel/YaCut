@@ -49,10 +49,14 @@
               {% with messages = get_flashed_messages() %}
                 {% if messages %}
                   {% for message in messages %}
-                    {{ message | safe }}
+                    {{ message }}
                   {% endfor %}
                 {% endif %}
               {% endwith %}
+              {% if short_url %}
+                Ваша новая ссылка готова: 
+                <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+              {% endif %}
             </h5>
           </p>
         </div>

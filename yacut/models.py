@@ -1,3 +1,6 @@
+import random
+import string
+
 from datetime import datetime
 
 from flask import url_for
@@ -21,3 +24,17 @@ class URLMap(db.Model):
             setattr(self, 'original', data['url'])
         if 'custom_id' in data:
             setattr(self, 'short', data['custom_id'])
+
+    @staticmethod
+    def get_url_map(short_id):
+        return URLMap.query.filter_by(short=short_id).first()
+
+    @staticmethod
+    def get_url_map_or_404(short_id):
+        return URLMap.query.filter_by(short=short_id).first_or_404()
+
+    @staticmethod
+    def get_random_link(length):
+        letters = string.ascii_letters + string.digits
+        short_id = ''.join(random.choice(letters) for _ in range(length))
+        return short_id if not URLMap.get_url_map(short_id) else None

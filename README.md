@@ -5,6 +5,7 @@
 * Python        3.11.5
 * Flask-Migrate 3.1.0
 * Flask-WTF     1.0.0
+* SQLAlchemy    1.4.29
 * python-dotenv 0.19.2
 
 ## Развёртывание проекта на локальном компьютере
