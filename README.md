@@ -24,6 +24,11 @@ windows: source venv/Scripts/activate
 python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
+Создать файл переменных окружения .env:
+```bash
+touch .env
+```
+И наполнить его переменными по примеру файла .env.example
 
 ## Использование
 ```python
