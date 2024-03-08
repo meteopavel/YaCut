@@ -1,4 +1,4 @@
-class Const():
+class Const:
     CUSTOM_ID_REGEXP = r'^[A-Za-z0-9]{1,6}$'
     RANDOM_LINK_LENGHT = 6
     ORIGINAL_LINK_LIMITS = {'lower': 1, 'upper': 256}
